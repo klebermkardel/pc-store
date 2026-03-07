@@ -2,6 +2,7 @@ const express = require('express');
 const sequelize = require('./config/database');
 const Category = require('./models/Category');
 const Product = require('./models/Product');
+const categoryRoutes = require('./routes/categoryRoutes');
 const productRoutes = require('./routes/productRoutes');
 
 const app = express();
@@ -10,7 +11,8 @@ app.use(express.json());
 Category.hasMany(Product, { foreignKey: 'category_id', as: 'products' });
 Product.belongsTo(Category, { foreignKey: 'category_id', as: 'category' });
 
-// Rota para listar todos os produtos ou por id
+// Rotas
+app.use('/categories', categoryRoutes);
 app.use('/products', productRoutes);
 
 const startServer = async () => {
