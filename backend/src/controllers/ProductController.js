@@ -61,6 +61,24 @@ const ProductController = {
             console.error("Erro ao criar produto:", error);
             return res.status(500).json({ error: 'Erro ao cadastrar o produto.' });
         }
+    },
+
+    async update(req, res) {
+        try {
+            const { id } = req.params;
+            const [updated] = await Product.update(req.body, {
+                where: { id: id }
+            }); 
+
+            if(!updated) {
+                return res.status(404).json({ error: 'Produto não encontrado para atualização ' });
+            }
+
+            const updatedProduct = await Product.findByPk(id);
+            return res.json(updatedProduct);
+        } catch (error) {
+            return res.status(500).json({ error: 'Erro ao atualizar produto.' });
+        }
     }
 };
 
