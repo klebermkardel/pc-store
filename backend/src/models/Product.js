@@ -17,12 +17,23 @@ const Product = sequelize.define('Product', {
         type: DataTypes.INTEGER,
         defaultValue: 0
     },
+    category_id: {
+        type: DataTypes.INTEGER,
+        allowNull: true,
+        references: {
+            model: 'categories',
+            key: 'id'
+        }
+    },
     image_url: {
         type: DataTypes.STRING
     },
     specifications: {
         type: DataTypes.JSON
     }
+}, {
+    tableName: 'products',
+    underscored: true
 });
 
 module.exports = Product;
