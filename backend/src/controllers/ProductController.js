@@ -35,6 +35,32 @@ const ProductController = {
         } catch (error) {
             return res.status(500).json({ error: 'Erro ao buscar o produto' });
         }
+    },
+
+    async create(req, res) {
+        try {
+            const { name, description, price, stock_quantity, category_id, image_url, specifications } = req.body;
+
+            const category = await Category.findByPk(category_id);
+            if(!category) {
+                return res.status(400).json({ error: 'A categoria informada não existe' });
+            }
+
+            const newProduct = await Product.create({
+                name,
+                description,
+                price,
+                stock_quantity,
+                category_id,
+                image_url,
+                specifications
+            });
+
+            return res.status(201).json(newProduct);
+        } catch (error) {
+            console.error("Erro ao criar produto:", error);
+            return res.status(500).json({ error: 'Erro ao cadastrar o produto.' });
+        }
     }
 };
 
