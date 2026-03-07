@@ -79,6 +79,23 @@ const ProductController = {
         } catch (error) {
             return res.status(500).json({ error: 'Erro ao atualizar produto.' });
         }
+    },
+
+    async delete(req, res) {
+        try {
+            const { id } = req.params;
+            const deleted = await Product.destroy({
+                where: { id: id }
+            });
+
+            if (!deleted) {
+                return res.status(404).json({ error: 'Produto não encontrado para exclusão.' });
+            }
+
+            return res.status(204).send();
+        } catch (error) {
+            return res.status(500).json({ error: 'Erro ao excluir produto.' });
+        }
     }
 };
 
