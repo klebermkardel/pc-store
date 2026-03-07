@@ -11,6 +11,9 @@ const Category = sequelize.define('Category', {
         allowNull: false,
         unique: true
     }
+}, {
+    tableName: 'categories',
+    underscored: true
 });
 
 module.exports = Category;
