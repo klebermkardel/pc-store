@@ -1,4 +1,5 @@
 const express = require('express');
+const cors = require('cors');
 const sequelize = require('./config/database');
 const Category = require('./models/Category');
 const Product = require('./models/Product');
@@ -6,6 +7,8 @@ const categoryRoutes = require('./routes/categoryRoutes');
 const productRoutes = require('./routes/productRoutes');
 
 const app = express();
+
+app.use(cors());
 app.use(express.json());
 
 Category.hasMany(Product, { foreignKey: 'category_id', as: 'products' });
