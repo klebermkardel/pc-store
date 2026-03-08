@@ -2,22 +2,39 @@ const Product = require('../models/Product');
 const Category = require('../models/Category');
 
 const ProductController = {
-    // Listar todos os produtos
+    // Listar todos os produtos e listagem por filtros
     async getAll(req, res) {
-        try {
-           const products = await Product.findAll({
-            include: [{
-                model: Category,
-                as: 'category',
-                atrtributes: ['name', 'slug']
-            }]
-           });
-           return res.json(products);
-        } catch (error) {
-            console.error("Erro no Controller ao buscar produtos:", error);
-            return res.status(500).json({ error: 'Erro interno ao buscar produtos '});
+    try {
+        const { category, min_price, max_price } = req.query;
+
+        let whereClause = {}; 
+        let categoryInclude = { 
+            model: Category, 
+            as: 'category', 
+            attributes: ['name', 'slug'] 
+        };
+
+        if (category) {
+            categoryInclude.where = { slug: category };
         }
-    },
+
+        if (min_price || max_price) {
+            whereClause.price = {};
+            if (min_price) whereClause.price[Op.gte] = parseFloat(min_price);
+            if (max_price) whereClause.price[Op.lte] = parseFloat(max_price);
+        }
+
+        const products = await Product.findAll({
+            where: whereClause,
+            include: [categoryInclude]
+        });
+
+        return res.json(products);
+    } catch (error) {
+        console.error("Erro no Controller ao buscar produtos:", error);
+        return res.status(500).json({ error: 'Erro interno ao buscar produtos' });
+    }
+},
 
     // Buscar um produto específico por ID (Novo endpoint!)
     async getById(req, res) {
