@@ -1,35 +1,30 @@
-import { useState } from 'react'
-import reactLogo from './assets/react.svg'
-import viteLogo from '/vite.svg'
-import './App.css'
+import { useEffect, useState } from "react";
+import api from './services/api';
 
 function App() {
-  const [count, setCount] = useState(0)
+  const [products, setProducts] = useState([]);
+
+  useEffect(() => {
+    // Busca os produtos da sua API quando a página carrega
+    api.get('/products')
+      .then(response => setProducts(response.data))
+      .catch(err => console.error("Erro ao carregar produtos", err));
+  }, []);
 
   return (
-    <>
-      <div>
-        <a href="https://vite.dev" target="_blank">
-          <img src={viteLogo} className="logo" alt="Vite logo" />
-        </a>
-        <a href="https://react.dev" target="_blank">
-          <img src={reactLogo} className="logo react" alt="React logo" />
-        </a>
+    <div style={{ padding: '20px' }}>
+      <h1>Loja de Hardware</h1>
+      <div style={{ display: 'grid', gridTemplateColumns: 'repeat(3, 1fr)', gap: '20px' }}>
+        {products.map(product => (
+          <div key={product.id} style={{ border: '1px solid #ccc', padding: '10px' }}>
+            <img src={product.image_url} alt={product.name} style={{ width: '100%' }} />
+            <h3>{product.name}</h3>
+            <p>R$ {product.price}</p>
+          </div>
+        ))}
       </div>
-      <h1>Vite + React</h1>
-      <div className="card">
-        <button onClick={() => setCount((count) => count + 1)}>
-          count is {count}
-        </button>
-        <p>
-          Edit <code>src/App.jsx</code> and save to test HMR
-        </p>
-      </div>
-      <p className="read-the-docs">
-        Click on the Vite and React logos to learn more
-      </p>
-    </>
-  )
+    </div>
+  );
 }
 
-export default App
+export default App;
