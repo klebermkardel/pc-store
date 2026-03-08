@@ -12,46 +12,39 @@ function App() {
   }, []);
 
   return (
-    <div style={{ fontFamily: 'Arial, sans-serif', backgroundColor: '#f4f4f4', minHeight: '100vh' }}>
-      <Header />
+  <div className="min-h-screen">
+    <Header />
+    
+    <main className="max-w-7xl mx-auto px-4">
+      <h1 className="text-3xl font-bold text-gray-800 mb-8">Destaques</h1>
       
-      <main style={{ maxWidth: '1200px', margin: '0 auto', padding: '0 20px' }}>
-        <h1 style={{ color: '#333' }}>Destaques</h1>
-        
-        <div style={{ 
-          display: 'grid', 
-          gridTemplateColumns: 'repeat(auto-fill, minmax(250px, 1fr))', 
-          gap: '20px' 
-        }}>
-          {products.map(product => (
-            <div key={product.id} style={{ 
-              backgroundColor: 'white', 
-              borderRadius: '8px', 
-              overflow: 'hidden', 
-              boxShadow: '0 2px 8px rgba(0,0,0,0.1)',
-              transition: 'transform 0.2s'
-            }}>
-              <img src={product.image_url} alt={product.name} style={{ width: '100%', height: '200px', objectFit: 'cover' }} />
-              <div style={{ padding: '15px' }}>
-                <h3 style={{ margin: '0 0 10px 0', fontSize: '1.1rem' }}>{product.name}</h3>
-                <p style={{ color: '#666', fontSize: '0.9rem', height: '40px', overflow: 'hidden' }}>{product.description}</p>
-                <p style={{ fontWeight: 'bold', fontSize: '1.2rem', color: '#2c3e50' }}>R$ {product.price.toLocaleString('pt-BR')}</p>
-                <button style={{ 
-                  width: '100%', 
-                  padding: '10px', 
-                  backgroundColor: '#007bff', 
-                  color: 'white', 
-                  border: 'none', 
-                  borderRadius: '4px',
-                  cursor: 'pointer'
-                }}>Adicionar ao Carrinho</button>
-              </div>
+      <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6">
+        {products.map(product => (
+          <div key={product.id} className="bg-white rounded-xl shadow-sm hover:shadow-xl transition-shadow duration-300 overflow-hidden border border-gray-100 flex flex-col">
+            <div className="h-48 overflow-hidden">
+              <img src={product.image_url} alt={product.name} className="w-full h-full object-cover hover:scale-105 transition-transform duration-500" />
             </div>
-          ))}
-        </div>
-      </main>
-    </div>
-  );
+            
+            <div className="p-5 flex flex-col flex-grow">
+              <h3 className="font-bold text-lg text-gray-900 mb-2 line-clamp-1">{product.name}</h3>
+              <p className="text-gray-500 text-sm mb-4 line-clamp-2 flex-grow">{product.description}</p>
+              
+              <div className="flex justify-between items-center mt-auto">
+                <span className="text-xl font-extrabold text-slate-900">
+                  R$ {product.price.toLocaleString('pt-BR')}
+                </span>
+              </div>
+              
+              <button className="w-full mt-4 bg-blue-600 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded-lg transition-colors">
+                Adicionar
+              </button>
+            </div>
+          </div>
+        ))}
+      </div>
+    </main>
+  </div>
+);
 }
 
 export default App;

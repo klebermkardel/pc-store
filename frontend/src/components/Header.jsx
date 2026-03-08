@@ -1,13 +1,13 @@
 function Header() {
   return (
-    <header style={{ padding: '20px', backgroundColor: '#20232a', color: 'white', marginBottom: '20px' }}>
-      <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', maxWidth: '1200px', margin: '0 auto' }}>
-        <h2 style={{ margin: 0 }}>PC Store 🖥️</h2>
+    <header className="bg-slate-900 text-white p-5 mb-8 shadow-md">
+      <div className="max-w-7xl mx-auto flex justify-between items-center">
+        <h2 className="text-2xl font-bold">PC Store 🖥️</h2>
         <nav>
-          <ul style={{ display: 'flex', listStyle: 'none', gap: '20px', margin: 0 }}>
-            <li>Home</li>
-            <li>Categorias</li>
-            <li>Carrinho</li>
+          <ul className="flex gap-6 font-medium">
+            <li className="hover:text-blue-400 cursor-pointer transition">Home</li>
+            <li className="hover:text-blue-400 cursor-pointer transition">Categorias</li>
+            <li className="hover:text-blue-400 cursor-pointer transition">Carrinho</li>
           </ul>
         </nav>
       </div>
