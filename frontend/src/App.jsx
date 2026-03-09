@@ -1,50 +1,74 @@
 import { useEffect, useState } from "react";
 import api from './services/api';
-import Header from './components/Header'; // Importando o Header
+import Header from './components/Header';
+import Sidebar from './components/Sidebar';
 
 function App() {
   const [products, setProducts] = useState([]);
+  const [currentCategory, setCurrentCategory] = useState('');
 
   useEffect(() => {
-    api.get('/products')
+    const query = currentCategory ? `?category=${currentCategory}` : '';
+    api.get(`/products${query}`)
       .then(response => setProducts(response.data))
       .catch(err => console.error("Erro ao carregar produtos", err));
-  }, []);
+  }, [currentCategory]);
 
   return (
-  <div className="min-h-screen">
-    <Header />
-    
-    <main className="max-w-7xl mx-auto px-4">
-      <h1 className="text-3xl font-bold text-gray-800 mb-8">Destaques</h1>
+    <div className="min-h-screen bg-gray-50">
+      <Header />
       
-      <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6">
-        {products.map(product => (
-          <div key={product.id} className="bg-white rounded-xl shadow-sm hover:shadow-xl transition-shadow duration-300 overflow-hidden border border-gray-100 flex flex-col">
-            <div className="h-48 overflow-hidden">
-              <img src={product.image_url} alt={product.name} className="w-full h-full object-cover hover:scale-105 transition-transform duration-500" />
-            </div>
-            
-            <div className="p-5 flex flex-col flex-grow">
-              <h3 className="font-bold text-lg text-gray-900 mb-2 line-clamp-1">{product.name}</h3>
-              <p className="text-gray-500 text-sm mb-4 line-clamp-2 flex-grow">{product.description}</p>
-              
-              <div className="flex justify-between items-center mt-auto">
-                <span className="text-xl font-extrabold text-slate-900">
-                  R$ {product.price.toLocaleString('pt-BR')}
-                </span>
-              </div>
-              
-              <button className="w-full mt-4 bg-blue-600 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded-lg transition-colors">
-                Adicionar
-              </button>
-            </div>
+      <main className="max-w-7xl mx-auto px-4 flex py-8">
+        <Sidebar onFilterCategory={setCurrentCategory} />
+        
+        <div className="flex-1">
+          <div className="flex justify-between items-center mb-8">
+            <h1 className="text-3xl font-extrabold text-gray-900 capitalize tracking-tight">
+              {currentCategory ? currentCategory.replace('-', ' ') : 'Destaques'}
+            </h1>
+            <span className="text-sm text-gray-500 font-medium">
+              {products.length} {products.length === 1 ? 'produto encontrado' : 'produtos encontrados'}
+            </span>
           </div>
-        ))}
-      </div>
-    </main>
-  </div>
-);
+          
+          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-8">
+            {products.length > 0 ? (
+              products.map(product => (
+                <div key={product.id} className="group bg-white rounded-2xl shadow-sm border border-gray-100 flex flex-col overflow-hidden hover:shadow-xl transition-all duration-300">
+                  <div className="relative overflow-hidden h-52">
+                    <img 
+                      src={product.image_url} 
+                      alt={product.name} 
+                      className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-500" 
+                    />
+                  </div>
+                  
+                  <div className="p-6 flex flex-col flex-grow">
+                    <h3 className="font-bold text-lg text-gray-900 mb-2 line-clamp-1">{product.name}</h3>
+                    <p className="text-gray-500 text-sm mb-6 flex-grow line-clamp-2">{product.description}</p>
+                    
+                    <div className="flex justify-between items-center mt-auto pt-4 border-t border-gray-50">
+                      <span className="text-2xl font-black text-slate-900">
+                        R$ {product.price.toLocaleString('pt-BR')}
+                      </span>
+                    </div>
+                    
+                    <button className="w-full mt-4 bg-slate-900 text-white py-3 rounded-xl font-bold hover:bg-blue-600 transition-colors duration-300 shadow-lg shadow-slate-200">
+                      Ver detalhes
+                    </button>
+                  </div>
+                </div>
+              ))
+            ) : (
+              <div className="col-span-full py-20 text-center">
+                <p className="text-gray-400 text-xl font-medium">Nenhum produto encontrado nesta categoria.</p>
+              </div>
+            )}
+          </div>
+        </div>
+      </main>
+    </div>
+  );
 }
 
 export default App;
