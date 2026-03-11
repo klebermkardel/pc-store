@@ -1,7 +1,7 @@
 import { useEffect, useState } from "react";
 import api from '../services/api';
 import Sidebar from '../components/Sidebar';
-import { Link } from 'react-router-dom'; // Importante para o botão
+import { Link } from 'react-router-dom';
 
 function Home() {
   const [products, setProducts] = useState([]);

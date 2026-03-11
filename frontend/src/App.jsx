@@ -6,7 +6,7 @@ import ProductDetails from './pages/ProductDetails';
 function App() {
   return (
     <div className="min-h-screen bg-gray-50">
-      <Header /> {/* O Header fica fora das Routes para aparecer em todas as páginas */}
+      <Header />
       
       <Routes>
         <Route path="/" element={<Home />} />
