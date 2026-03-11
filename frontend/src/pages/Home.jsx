@@ -31,9 +31,19 @@ function Home() {
         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-8">
           {products.map(product => (
             <div key={product.id} className="group bg-white rounded-2xl shadow-sm border border-gray-100 flex flex-col overflow-hidden hover:shadow-xl transition-all duration-300">
-              <img src={product.image_url} alt={product.name} className="h-52 w-full object-cover group-hover:scale-110 transition-transform duration-500" />
+                <Link to={`/product/${product.id}`} className="relative overflow-hidden h-52 block">
+                    <img 
+                        src={product.image_url} 
+                        alt={product.name} 
+                        className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-500 cursor-pointer" 
+                    />
+                </Link>
               <div className="p-6 flex flex-col flex-grow">
-                <h3 className="font-bold text-lg text-gray-900 mb-2 line-clamp-1">{product.name}</h3>
+                <Link to={`/product/${product.id}`}>
+                    <h3 className="font-bold text-lg text-gray-900 mb-2 line-clamp-1 hover:text-blue-600 transition-colors">
+                        {product.name}
+                    </h3>
+                </Link>
                 <p className="text-gray-500 text-sm mb-6 flex-grow line-clamp-2">{product.description}</p>
                 <span className="text-2xl font-black text-slate-900">R$ {product.price.toLocaleString('pt-BR')}</span>
                 
