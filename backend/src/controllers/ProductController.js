@@ -5,37 +5,49 @@ const Category = require('../models/Category');
 const ProductController = {
     // Listar todos os produtos e listagem por filtros
     async getAll(req, res) {
-    try {
-        const { category, min_price, max_price } = req.query;
+        try {
+            // 1. Adicione 'sort' à desestruturação
+            const { category, min_price, max_price, sort } = req.query;
 
-        let whereClause = {}; 
-        let categoryInclude = { 
-            model: Category, 
-            as: 'category', 
-            attributes: ['name', 'slug'] 
-        };
+            let whereClause = {};
+            let categoryWhere = {};
+            
+            let orderClause = [['id', 'ASC']]; 
 
-        if (category) {
-            categoryInclude.where = { slug: category };
+            if (sort === 'price_asc') {
+                orderClause = [['price', 'ASC']];
+            } else if (sort === 'price_desc') {
+                orderClause = [['price', 'DESC']];
+            }
+
+            if (category) {
+                categoryWhere = { slug: category };
+            }
+
+            if (min_price || max_price) {
+                whereClause.price = {};
+                if (min_price) whereClause.price[Op.gte] = parseFloat(min_price);
+                if (max_price) whereClause.price[Op.lte] = parseFloat(max_price);
+            }
+
+            const products = await Product.findAll({
+                where: whereClause,
+                order: orderClause, // 3. Aplique a ordenação aqui
+                include: [{
+                    model: Category,
+                    as: 'category',
+                    attributes: ['name', 'slug'],
+                    where: Object.keys(categoryWhere).length > 0 ? categoryWhere : null,
+                    required: category ? true : false
+                }]
+            });
+
+            return res.json(products);
+        } catch (error) {
+            console.error("Erro no Controller ao buscar produtos:", error);
+            return res.status(500).json({ error: 'Erro interno ao buscar produtos' });
         }
-
-        if (min_price || max_price) {
-            whereClause.price = {};
-            if (min_price) whereClause.price[Op.gte] = parseFloat(min_price);
-            if (max_price) whereClause.price[Op.lte] = parseFloat(max_price);
-        }
-
-        const products = await Product.findAll({
-            where: whereClause,
-            include: [categoryInclude]
-        });
-
-        return res.json(products);
-    } catch (error) {
-        console.error("Erro no Controller ao buscar produtos:", error);
-        return res.status(500).json({ error: 'Erro interno ao buscar produtos' });
-    }
-},
+    },
 
     // Buscar um produto específico por ID (Novo endpoint!)
     async getById(req, res) {
