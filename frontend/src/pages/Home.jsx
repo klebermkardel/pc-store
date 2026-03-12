@@ -1,27 +1,30 @@
 import { useEffect, useState } from "react";
 import api from '../services/api';
 import Sidebar from '../components/Sidebar';
-import { Link } from 'react-router-dom';
+import { useSearchParams, Link } from 'react-router-dom';
 
 function Home() {
   const [products, setProducts] = useState([]);
   const [currentCategory, setCurrentCategory] = useState('');
   const [priceRange, setPriceRange] = useState({ min: '', max: '' });
-  const [sortOrder, setSortOrder] = useState(''); // Novo estado para ordenação
+  const [sortOrder, setSortOrder] = useState('');
+  const [searchParams] = useSearchParams();
+  const searchTerm = searchParams.get('search') || '';
 
   useEffect(() => {
     let query = [];
     if (currentCategory) query.push(`category=${currentCategory}`);
     if (priceRange.min) query.push(`min_price=${priceRange.min}`);
     if (priceRange.max) query.push(`max_price=${priceRange.max}`);
-    if (sortOrder) query.push(`sort=${sortOrder}`); // Envia o sort para a API
+    if (sortOrder) query.push(`sort=${sortOrder}`);
+    if(searchTerm) query.push(`name=${searchTerm}`);
     
     const queryString = query.length > 0 ? `?${query.join('&')}` : '';
 
     api.get(`/products${queryString}`)
       .then(response => setProducts(response.data))
       .catch(err => console.error(err));
-  }, [currentCategory, priceRange, sortOrder]);
+  }, [currentCategory, priceRange, sortOrder, searchTerm]);
 
   const handlePriceFilter = (min, max) => {
     setPriceRange({ min, max });
