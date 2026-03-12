@@ -6,17 +6,32 @@ import { Link } from 'react-router-dom';
 function Home() {
   const [products, setProducts] = useState([]);
   const [currentCategory, setCurrentCategory] = useState('');
+  const [priceRange, setPriceRange] = useState({ min: '', max: '' });
 
   useEffect(() => {
-    const query = currentCategory ? `?category=${currentCategory}` : '';
-    api.get(`/products${query}`)
+    // Construção dinâmica da Query String
+    let query = [];
+    if (currentCategory) query.push(`category=${currentCategory}`);
+    if (priceRange.min) query.push(`min_price=${priceRange.min}`);
+    if (priceRange.max) query.push(`max_price=${priceRange.max}`);
+    
+    const queryString = query.length > 0 ? `?${query.join('&')}` : '';
+
+    api.get(`/products${queryString}`)
       .then(response => setProducts(response.data))
       .catch(err => console.error("Erro ao carregar produtos", err));
-  }, [currentCategory]);
+  }, [currentCategory, priceRange]); // Re-executa se categoria ou preço mudar
+
+  const handlePriceFilter = (min, max) => {
+    setPriceRange({ min, max });
+  };
 
   return (
     <main className="max-w-7xl mx-auto px-4 flex py-8">
-      <Sidebar onFilterCategory={setCurrentCategory} />
+      <Sidebar 
+        onFilterCategory={setCurrentCategory} 
+        onFilterPrice={handlePriceFilter} 
+      />
       
       <div className="flex-1">
         <div className="flex justify-between items-center mb-8">
