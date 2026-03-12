@@ -7,20 +7,21 @@ function Home() {
   const [products, setProducts] = useState([]);
   const [currentCategory, setCurrentCategory] = useState('');
   const [priceRange, setPriceRange] = useState({ min: '', max: '' });
+  const [sortOrder, setSortOrder] = useState(''); // Novo estado para ordenação
 
   useEffect(() => {
-    // Construção dinâmica da Query String
     let query = [];
     if (currentCategory) query.push(`category=${currentCategory}`);
     if (priceRange.min) query.push(`min_price=${priceRange.min}`);
     if (priceRange.max) query.push(`max_price=${priceRange.max}`);
+    if (sortOrder) query.push(`sort=${sortOrder}`); // Envia o sort para a API
     
     const queryString = query.length > 0 ? `?${query.join('&')}` : '';
 
     api.get(`/products${queryString}`)
       .then(response => setProducts(response.data))
-      .catch(err => console.error("Erro ao carregar produtos", err));
-  }, [currentCategory, priceRange]); // Re-executa se categoria ou preço mudar
+      .catch(err => console.error(err));
+  }, [currentCategory, priceRange, sortOrder]);
 
   const handlePriceFilter = (min, max) => {
     setPriceRange({ min, max });
@@ -38,9 +39,16 @@ function Home() {
           <h1 className="text-3xl font-extrabold text-gray-900 capitalize tracking-tight">
             {currentCategory ? currentCategory.replace('-', ' ') : 'Destaques'}
           </h1>
-          <span className="text-sm text-gray-500 font-medium">
-            {products.length} {products.length === 1 ? 'produto encontrado' : 'produtos encontrados'}
-          </span>
+          
+          <select 
+            value={sortOrder} 
+            onChange={(e) => setSortOrder(e.target.value)}
+            className="border border-gray-300 rounded-lg p-2 text-sm bg-white outline-none focus:ring-2 focus:ring-blue-500"
+          >
+            <option value="">Ordenar por</option>
+            <option value="price_asc">Menor Preço</option>
+            <option value="price_desc">Maior Preço</option>
+          </select>
         </div>
         
         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-8">
@@ -62,7 +70,6 @@ function Home() {
                 <p className="text-gray-500 text-sm mb-6 flex-grow line-clamp-2">{product.description}</p>
                 <span className="text-2xl font-black text-slate-900">R$ {product.price.toLocaleString('pt-BR')}</span>
                 
-                {/* Transformando o botão em Link */}
                 <Link to={`/product/${product.id}`} className="w-full mt-4 bg-slate-900 text-white py-3 rounded-xl font-bold hover:bg-blue-600 transition-colors text-center block shadow-lg shadow-slate-200">
                   Ver detalhes
                 </Link>
