@@ -1,3 +1,4 @@
+import { useCart } from '../context/CartContext';
 import { useEffect, useState } from "react";
 import api from '../services/api';
 import Sidebar from '../components/Sidebar';
@@ -29,6 +30,8 @@ function Home() {
   const handlePriceFilter = (min, max) => {
     setPriceRange({ min, max });
   };
+
+  const { addToCart } = useCart();
 
   return (
     <main className="max-w-7xl mx-auto px-4 flex py-8">
@@ -71,7 +74,19 @@ function Home() {
                     </h3>
                 </Link>
                 <p className="text-gray-500 text-sm mb-6 flex-grow line-clamp-2">{product.description}</p>
-                <span className="text-2xl font-black text-slate-900">R$ {product.price.toLocaleString('pt-BR')}</span>
+
+                <div className="flex justify-between items-center mt-auto">
+                  <span className="text-2xl font-black text-slate-900">
+                    R$ {product.price.toLocaleString('pt-BR')}
+                  </span>
+                </div>
+
+                <button 
+                  onClick={() => addToCart(product)}
+                  className="w-full mt-2 bg-blue-600 text-white py-2 rounded-xl font-bold hover:bg-blue-700 transition"
+                >
+                  🛒 Adicionar ao Carrinho
+                </button>
                 
                 <Link to={`/product/${product.id}`} className="w-full mt-4 bg-slate-900 text-white py-3 rounded-xl font-bold hover:bg-blue-600 transition-colors text-center block shadow-lg shadow-slate-200">
                   Ver detalhes

@@ -1,9 +1,11 @@
 import { Link, useNavigate } from 'react-router-dom';
 import { useState } from 'react';
+import { useCart } from '../context/CartContext';
 
 function Header() {
   const [searchTerm, setSearchTerm] = useState('');
   const navigate = useNavigate();
+  const { cartCount } = useCart();
 
   const handleSearch = (e) => {
     e.preventDefault();
@@ -31,9 +33,23 @@ function Header() {
         </form>
 
         <nav>
-          <ul className="flex gap-6 font-medium">
-            <li><Link to="/" className="hover:text-blue-400 transition">Home</Link></li>
-            <li className="hover:text-blue-400 transition cursor-pointer">Carrinho</li>
+          <ul className="flex gap-6 font-medium items-center">
+            <li>
+              <Link to="/" className="hover:text-blue-400 transition">Home</Link>
+            </li>
+            <li>
+              <Link to="/cart" className="relative group flex items-center gap-2 hover:text-blue-400 transition">
+                <span>Carrinho</span>
+                <div className="relative">
+                  <span className="text-xl">🛒</span>
+                  {cartCount > 0 && (
+                    <span className="absolute -top-2 -right-2 bg-blue-600 text-white text-[10px] font-bold h-4 w-4 flex items-center justify-center rounded-full border-2 border-slate-900 group-hover:scale-110 transition-transform">
+                      {cartCount}
+                    </span>
+                  )}
+                </div>
+              </Link>
+            </li>
           </ul>
         </nav>
       </div>
