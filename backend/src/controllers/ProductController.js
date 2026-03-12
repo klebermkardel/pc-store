@@ -3,16 +3,19 @@ const Product = require('../models/Product');
 const Category = require('../models/Category');
 
 const ProductController = {
-    // Listar todos os produtos e listagem por filtros
     async getAll(req, res) {
         try {
-            // 1. Adicione 'sort' à desestruturação
-            const { category, min_price, max_price, sort } = req.query;
+            const { category, min_price, max_price, sort, name } = req.query;
 
             let whereClause = {};
             let categoryWhere = {};
+            let orderClause = [['id', 'ASC']];
             
-            let orderClause = [['id', 'ASC']]; 
+            if (name) {
+                whereClause.name = {
+                    [Op.like]: `%${name}%`
+                };
+            }
 
             if (sort === 'price_asc') {
                 orderClause = [['price', 'ASC']];
@@ -32,7 +35,7 @@ const ProductController = {
 
             const products = await Product.findAll({
                 where: whereClause,
-                order: orderClause, // 3. Aplique a ordenação aqui
+                order: orderClause,
                 include: [{
                     model: Category,
                     as: 'category',
@@ -49,7 +52,6 @@ const ProductController = {
         }
     },
 
-    // Buscar um produto específico por ID (Novo endpoint!)
     async getById(req, res) {
         try {
             const { id } = req.params;
