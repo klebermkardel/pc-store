@@ -5,8 +5,13 @@ const CartContext = createContext();
 
 export function CartProvider({ children }) {
     const [cart, setCart] = useState(() => {
-        const savedCart = localStorage.getItem('pc_store_cart');
-        return savedCart ? JSON.parse(savedCart) : [];
+        // 1. Proteção contra JSON corrompido
+        try {
+            const savedCart = localStorage.getItem('pc_store_cart');
+            return savedCart ? JSON.parse(savedCart) : [];
+        } catch {
+            return [];
+        }
     });
 
     useEffect(() => {
@@ -16,7 +21,7 @@ export function CartProvider({ children }) {
     const addToCart = (product) => {
         setCart(prevCart => {
             const existingProduct = prevCart.find(item => item.id === product.id);
-            if(existingProduct) {
+            if (existingProduct) {
                 return prevCart.map(item =>
                     item.id === product.id ? { ...item, quantity: item.quantity + 1 } : item
                 );
@@ -29,13 +34,23 @@ export function CartProvider({ children }) {
         setCart(prevCart => prevCart.filter(item => item.id !== productId));
     };
 
+    // 2. Atualiza quantidade diretamente
+    const updateQuantity = (productId, quantity) => {
+        if (quantity <= 0) return removeFromCart(productId);
+        setCart(prevCart =>
+            prevCart.map(item =>
+                item.id === productId ? { ...item, quantity } : item
+            )
+        );
+    };
+
     const clearCart = () => setCart([]);
 
     const cartCount = cart.reduce((total, item) => total + item.quantity, 0);
     const cartTotal = cart.reduce((total, item) => total + (item.price * item.quantity), 0);
 
     return (
-        <CartContext.Provider value={{ cart, addToCart, removeFromCart, clearCart, cartCount, cartTotal }}>
+        <CartContext.Provider value={{ cart, addToCart, removeFromCart, updateQuantity, clearCart, cartCount, cartTotal }}>
             {children}
         </CartContext.Provider>
     );
