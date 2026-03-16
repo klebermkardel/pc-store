@@ -26,6 +26,11 @@ const User = sequelize.define('User', {
             notEmpty: { msg: 'A senha não pode ser vazia' }
         }
     },
+    is_admin: {
+        type: DataTypes.BOOLEAN,
+        defaultValue: false,
+        allowNull: false
+    },
     refresh_token: {
         type: DataTypes.TEXT,
         allowNull: true,
