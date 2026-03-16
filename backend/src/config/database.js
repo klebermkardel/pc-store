@@ -15,6 +15,9 @@ const sequelize = new Sequelize(
         dialect: 'mysql',
         logging: false,
         timezone: process.env.DB_TIMEZONE || '-03:00',
+        retry: {
+            max: 3
+        },
         define: {
             timestamps: true,
             underscored: true
