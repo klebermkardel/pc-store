@@ -8,4 +8,8 @@ export default {
     extend: {},
   },
   plugins: [],
+  fontFamily: {
+  rajdhani: ['Rajdhani', 'sans-serif'],
+  mono: ['"Share Tech Mono"', 'monospace'],
+}
 }
