@@ -8,7 +8,7 @@ const CategoryController = {
             const categories = await Category.findAll();
             return res.json(categories);
         } catch (error) {
-            console.error("Erro ao buscar categorias:", error);
+            console.error('Erro ao buscar categorias:', error);
             return res.status(500).json({ error: 'Erro interno ao buscar categorias' });
         }
     },
@@ -16,7 +16,11 @@ const CategoryController = {
     // Buscar uma categoria específica e seus produtos
     async getById(req, res) {
         try {
-            const { id } = req.params;
+            const id = parseInt(req.params.id);
+            if (isNaN(id)) {
+                return res.status(400).json({ error: 'ID inválido' });
+            }
+
             const category = await Category.findByPk(id, {
                 include: [{ model: Product, as: 'products' }]
             });
@@ -27,6 +31,7 @@ const CategoryController = {
 
             return res.json(category);
         } catch (error) {
+            console.error('Erro ao buscar categoria:', error);
             return res.status(500).json({ error: 'Erro ao buscar a categoria' });
         }
     }
