@@ -4,6 +4,8 @@ import Home from './pages/Home';
 import ProductDetails from './pages/ProductDetails';
 import NotFound from './pages/NotFound';
 import Cart from './pages/Cart';
+import Checkout from './pages/Checkout';
+
 
 function App() {
   return (
@@ -15,6 +17,7 @@ function App() {
         <Route path="/product/:id" element={<ProductDetails />} />
         <Route path="*" element={<NotFound />} />
         <Route path="/cart" element={<Cart />} />
+        <Route path="/checkout" element={<Checkout />} />
       </Routes>
     </div>
   );
