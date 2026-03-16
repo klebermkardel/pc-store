@@ -29,6 +29,12 @@ const startServer = async () => {
         app.listen(PORT, () => {
             console.log(`Servidor rodando em http://localhost:${PORT}`);
         });
+
+        process.on('SIGTERM', async () => {
+            console.log('Encerrando servidor...');
+            await sequelize.close();
+            process.exit(0);
+        });
     } catch (error) {
         console.error('Erro ao iniciar servidor:', error);
     }
