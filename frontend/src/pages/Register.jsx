@@ -16,12 +16,8 @@ function Register() {
         e.preventDefault();
         setError(null);
 
-        if (password !== confirm) {
-            return setError('As senhas não coincidem');
-        }
-        if (password.length < 6) {
-            return setError('A senha deve ter pelo menos 6 caracteres');
-        }
+        if (password !== confirm) return setError('As senhas não coincidem');
+        if (password.length < 6) return setError('A senha deve ter pelo menos 6 caracteres');
 
         setLoading(true);
         try {
@@ -38,7 +34,6 @@ function Register() {
         <div className="min-h-screen bg-[#080b0f] flex items-center justify-center px-4">
             <div className="w-full max-w-md">
 
-                {/* Logo */}
                 <div className="text-center mb-8">
                     <p className="text-emerald-500 font-mono text-[10px] tracking-[3px] uppercase mb-2">
                         // novo acesso
@@ -48,7 +43,6 @@ function Register() {
                     </h1>
                 </div>
 
-                {/* Card */}
                 <div className="bg-[#0d1117] border border-white/5 relative overflow-hidden">
                     <div className="absolute top-0 left-0 right-0 h-[2px] bg-gradient-to-r from-transparent via-emerald-500 to-transparent" />
 
