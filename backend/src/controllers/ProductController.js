@@ -7,10 +7,18 @@ const ProductController = {
         try {
             const { category, min_price, max_price, sort, name } = req.query;
 
+            // 3. Validação dos parâmetros de preço
+            if (min_price && isNaN(parseFloat(min_price))) {
+                return res.status(400).json({ error: 'O valor mínimo informado é inválido' });
+            }
+            if (max_price && isNaN(parseFloat(max_price))) {
+                return res.status(400).json({ error: 'O valor máximo informado é inválido' });
+            }
+
             let whereClause = {};
             let categoryWhere = {};
             let orderClause = [['id', 'ASC']];
-            
+
             if (name) {
                 whereClause.name = {
                     [Op.like]: `%${name}%`
@@ -47,14 +55,19 @@ const ProductController = {
 
             return res.json(products);
         } catch (error) {
-            console.error("Erro no Controller ao buscar produtos:", error);
+            console.error('Erro ao buscar produtos:', error);
             return res.status(500).json({ error: 'Erro interno ao buscar produtos' });
         }
     },
 
     async getById(req, res) {
         try {
-            const { id } = req.params;
+            // 1. Validação de ID numérico
+            const id = parseInt(req.params.id);
+            if (isNaN(id)) {
+                return res.status(400).json({ error: 'ID inválido' });
+            }
+
             const product = await Product.findByPk(id, {
                 include: [{ model: Category, as: 'category', attributes: ['name'] }]
             });
@@ -65,6 +78,7 @@ const ProductController = {
 
             return res.json(product);
         } catch (error) {
+            console.error('Erro ao buscar produto:', error);
             return res.status(500).json({ error: 'Erro ao buscar o produto' });
         }
     },
@@ -73,8 +87,13 @@ const ProductController = {
         try {
             const { name, description, price, stock_quantity, category_id, image_url, specifications } = req.body;
 
+            // 2. Validação dos campos obrigatórios
+            if (!name || !price || !category_id) {
+                return res.status(400).json({ error: 'Os campos nome, preço e categoria são obrigatórios' });
+            }
+
             const category = await Category.findByPk(category_id);
-            if(!category) {
+            if (!category) {
                 return res.status(400).json({ error: 'A categoria informada não existe' });
             }
 
@@ -90,43 +109,55 @@ const ProductController = {
 
             return res.status(201).json(newProduct);
         } catch (error) {
-            console.error("Erro ao criar produto:", error);
-            return res.status(500).json({ error: 'Erro ao cadastrar o produto.' });
+            console.error('Erro ao criar produto:', error);
+            return res.status(500).json({ error: 'Erro ao cadastrar o produto' });
         }
     },
 
     async update(req, res) {
         try {
-            const { id } = req.params;
-            const [updated] = await Product.update(req.body, {
-                where: { id: id }
-            }); 
+            // 1. Validação de ID numérico
+            const id = parseInt(req.params.id);
+            if (isNaN(id)) {
+                return res.status(400).json({ error: 'ID inválido' });
+            }
 
-            if(!updated) {
-                return res.status(404).json({ error: 'Produto não encontrado para atualização ' });
+            const [updated] = await Product.update(req.body, {
+                where: { id }
+            });
+
+            if (!updated) {
+                return res.status(404).json({ error: 'Produto não encontrado para atualização' });
             }
 
             const updatedProduct = await Product.findByPk(id);
             return res.json(updatedProduct);
         } catch (error) {
-            return res.status(500).json({ error: 'Erro ao atualizar produto.' });
+            console.error('Erro ao atualizar produto:', error);
+            return res.status(500).json({ error: 'Erro ao atualizar produto' });
         }
     },
 
     async delete(req, res) {
         try {
-            const { id } = req.params;
+            // 1. Validação de ID numérico
+            const id = parseInt(req.params.id);
+            if (isNaN(id)) {
+                return res.status(400).json({ error: 'ID inválido' });
+            }
+
             const deleted = await Product.destroy({
-                where: { id: id }
+                where: { id }
             });
 
             if (!deleted) {
-                return res.status(404).json({ error: 'Produto não encontrado para exclusão.' });
+                return res.status(404).json({ error: 'Produto não encontrado para exclusão' });
             }
 
             return res.status(204).send();
         } catch (error) {
-            return res.status(500).json({ error: 'Erro ao excluir produto.' });
+            console.error('Erro ao excluir produto:', error);
+            return res.status(500).json({ error: 'Erro ao excluir produto' });
         }
     }
 };
