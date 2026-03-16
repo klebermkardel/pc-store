@@ -3,22 +3,24 @@ const cors = require('cors');
 const sequelize = require('./config/database');
 const Category = require('./models/Category');
 const Product = require('./models/Product');
+const User = require('./models/User');
 const categoryRoutes = require('./routes/categoryRoutes');
 const productRoutes = require('./routes/productRoutes');
+const authRoutes = require('./routes/authRoutes');
 
 const app = express();
 
 app.use(cors({
-  origin: process.env.CORS_ORIGIN || 'http://localhost:5173'
+    origin: process.env.CORS_ORIGIN || 'http://localhost:5173'
 }));
 app.use(express.json());
 
 Category.hasMany(Product, { foreignKey: 'category_id', as: 'products' });
 Product.belongsTo(Category, { foreignKey: 'category_id', as: 'category' });
 
-// Rotas
 app.use('/categories', categoryRoutes);
 app.use('/products', productRoutes);
+app.use('/auth', authRoutes);
 
 const startServer = async () => {
     try {
@@ -31,6 +33,12 @@ const startServer = async () => {
         });
 
         process.on('SIGTERM', async () => {
+            console.log('Encerrando servidor...');
+            await sequelize.close();
+            process.exit(0);
+        });
+
+        process.on('SIGINT', async () => {
             console.log('Encerrando servidor...');
             await sequelize.close();
             process.exit(0);
