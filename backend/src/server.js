@@ -8,7 +8,9 @@ const productRoutes = require('./routes/productRoutes');
 
 const app = express();
 
-app.use(cors());
+app.use(cors({
+  origin: process.env.CORS_ORIGIN || 'http://localhost:5173'
+}));
 app.use(express.json());
 
 Category.hasMany(Product, { foreignKey: 'category_id', as: 'products' });
