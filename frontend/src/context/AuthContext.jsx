@@ -28,6 +28,7 @@ export function AuthProvider({ children }) {
         localStorage.setItem('access_token', data.accessToken);
         localStorage.setItem('refresh_token', data.refreshToken);
         setUser(data.user);
+        return data;
     };
 
     const login = async (email, password) => {
@@ -35,6 +36,7 @@ export function AuthProvider({ children }) {
         localStorage.setItem('access_token', data.accessToken);
         localStorage.setItem('refresh_token', data.refreshToken);
         setUser(data.user);
+        return data;
     };
 
     const logout = async () => {
