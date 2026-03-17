@@ -28,11 +28,7 @@ const AuthController = {
 
             const hashedPassword = await bcrypt.hash(password, 12);
 
-            const user = await User.create({
-                name,
-                email,
-                password: hashedPassword
-            });
+            const user = await User.create({ name, email, password: hashedPassword });
 
             const accessToken = generateAccessToken(user.id);
             const refreshToken = generateRefreshToken(user.id);
@@ -40,7 +36,7 @@ const AuthController = {
             await user.update({ refresh_token: refreshToken });
 
             return res.status(201).json({
-                user: { id: user.id, name: user.name, email: user.email },
+                user: { id: user.id, name: user.name, email: user.email, is_admin: user.is_admin },
                 accessToken,
                 refreshToken
             });
@@ -74,7 +70,7 @@ const AuthController = {
             await user.update({ refresh_token: refreshToken });
 
             return res.json({
-                user: { id: user.id, name: user.name, email: user.email },
+                user: { id: user.id, name: user.name, email: user.email, is_admin: user.is_admin },
                 accessToken,
                 refreshToken
             });
@@ -87,7 +83,7 @@ const AuthController = {
     async me(req, res) {
         try {
             const user = await User.findByPk(req.userId, {
-                attributes: ['id', 'name', 'email', 'created_at']
+                attributes: ['id', 'name', 'email', 'is_admin', 'created_at']
             });
 
             if (!user) {
