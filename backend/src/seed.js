@@ -1,11 +1,23 @@
 const sequelize = require('./config/database');
 const Category = require('./models/Category');
 const Product = require('./models/Product');
+const User = require('./models/User');
+const bcrypt = require('bcryptjs');
 
 const seed = async () => {
     try {
         await sequelize.sync({ force: true });
         console.log('--- Banco resetado para o Seed ---');
+
+        // --- ADMIN ---
+        const adminPassword = await bcrypt.hash('admin123', 12);
+        await User.create({
+            name: 'Administrador',
+            email: 'admin@pcstore.com',
+            password: adminPassword,
+            is_admin: true
+        });
+        console.log('--- Admin criado: admin@pcstore.com / admin123 ---');
 
         // --- 1. CATEGORIAS ---
         const [c1, c2, c3, c4, c5] = await Category.bulkCreate([
