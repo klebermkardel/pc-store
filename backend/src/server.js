@@ -7,6 +7,7 @@ const User = require('./models/User');
 const categoryRoutes = require('./routes/categoryRoutes');
 const productRoutes = require('./routes/productRoutes');
 const authRoutes = require('./routes/authRoutes');
+const adminRoutes = require('./routes/adminRoutes');
 
 const app = express();
 
@@ -21,6 +22,7 @@ Product.belongsTo(Category, { foreignKey: 'category_id', as: 'category' });
 app.use('/categories', categoryRoutes);
 app.use('/products', productRoutes);
 app.use('/auth', authRoutes);
+app.use('/admin', adminRoutes);
 
 const startServer = async () => {
     try {
