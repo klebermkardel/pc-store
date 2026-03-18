@@ -21,7 +21,7 @@ function Products() {
     const fetchProducts = async () => {
         try {
             const res = await api.get('/admin/products');
-            setProducts(res.data);
+            setProducts(res.data.products ?? res.data);
         } catch {
             setError('Erro ao carregar produtos.');
         } finally {
