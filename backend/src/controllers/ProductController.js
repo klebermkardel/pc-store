@@ -5,9 +5,8 @@ const Category = require('../models/Category');
 const ProductController = {
     async getAll(req, res) {
         try {
-            const { category, min_price, max_price, sort, name } = req.query;
+            const { category, min_price, max_price, sort, name, page = 1, limit = 9 } = req.query;
 
-            // 3. Validação dos parâmetros de preço
             if (min_price && isNaN(parseFloat(min_price))) {
                 return res.status(400).json({ error: 'O valor mínimo informado é inválido' });
             }
@@ -20,9 +19,7 @@ const ProductController = {
             let orderClause = [['id', 'ASC']];
 
             if (name) {
-                whereClause.name = {
-                    [Op.like]: `%${name}%`
-                };
+                whereClause.name = { [Op.like]: `%${name}%` };
             }
 
             if (sort === 'price_asc') {
@@ -41,9 +38,15 @@ const ProductController = {
                 if (max_price) whereClause.price[Op.lte] = parseFloat(max_price);
             }
 
-            const products = await Product.findAll({
+            const pageNum = Math.max(1, parseInt(page));
+            const limitNum = Math.max(1, parseInt(limit));
+            const offset = (pageNum - 1) * limitNum;
+
+            const { count, rows } = await Product.findAndCountAll({
                 where: whereClause,
                 order: orderClause,
+                limit: limitNum,
+                offset,
                 include: [{
                     model: Category,
                     as: 'category',
@@ -53,7 +56,12 @@ const ProductController = {
                 }]
             });
 
-            return res.json(products);
+            return res.json({
+                products: rows,
+                total: count,
+                page: pageNum,
+                totalPages: Math.ceil(count / limitNum)
+            });
         } catch (error) {
             console.error('Erro ao buscar produtos:', error);
             return res.status(500).json({ error: 'Erro interno ao buscar produtos' });
