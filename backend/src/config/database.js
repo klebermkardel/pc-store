@@ -3,7 +3,7 @@ require('dotenv').config();
 
 const required = ['DB_NAME', 'DB_USER', 'DB_PASS', 'DB_HOST'];
 required.forEach(key => {
-  if (!process.env[key]) throw new Error(`Variável de ambiente ausente: ${key}`);
+    if (!process.env[key]) throw new Error(`Variável de ambiente ausente: ${key}`);
 });
 
 const sequelize = new Sequelize(
@@ -12,15 +12,20 @@ const sequelize = new Sequelize(
     process.env.DB_PASS,
     {
         host: process.env.DB_HOST,
+        port: process.env.DB_PORT || 3306,
         dialect: 'mysql',
         logging: false,
         timezone: process.env.DB_TIMEZONE || '-03:00',
-        retry: {
-            max: 3
-        },
+        retry: { max: 3 },
         define: {
             timestamps: true,
             underscored: true
+        },
+        dialectOptions: {
+            ssl: {
+                require: true,
+                rejectUnauthorized: false
+            }
         },
         pool: {
             max: 10,
