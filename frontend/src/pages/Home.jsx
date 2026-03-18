@@ -117,7 +117,6 @@ function Home() {
         fetchProducts();
     }, [currentCategory, priceRange, sortOrder, searchTerm, page]);
 
-    // Resetar para página 1 ao mudar filtros
     useEffect(() => {
         setPage(1);
     }, [currentCategory, priceRange, sortOrder, searchTerm]);
@@ -126,22 +125,23 @@ function Home() {
 
     return (
         <div className="min-h-screen bg-[#080b0f]">
-            <div className="max-w-7xl mx-auto px-6 py-8 flex gap-8">
+            <div className="max-w-7xl mx-auto px-4 md:px-6 py-6 md:py-8 flex flex-col md:flex-row gap-6 md:gap-8">
                 <Sidebar
                     onFilterCategory={setCurrentCategory}
                     onFilterPrice={(min, max) => setPriceRange({ min, max })}
                 />
 
                 <div className="flex-1 min-w-0">
+
                     {/* Topbar */}
-                    <div className="flex justify-between items-end mb-8 pb-5 border-b border-emerald-900/40 relative">
+                    <div className="flex flex-col sm:flex-row sm:justify-between sm:items-end gap-3 mb-6 md:mb-8 pb-5 border-b border-emerald-900/40 relative">
                         <div className="absolute bottom-[-1px] left-0 w-20 h-[2px] bg-emerald-500" />
                         <div>
                             <p className="text-emerald-500 text-[10px] tracking-[3px] uppercase font-mono mb-1">
                                 // catálogo
                             </p>
-                            <div className="flex items-baseline gap-3">
-                                <h1 className="text-4xl font-bold text-gray-100 uppercase tracking-widest leading-none">
+                            <div className="flex items-baseline gap-3 flex-wrap">
+                                <h1 className="text-3xl md:text-4xl font-bold text-gray-100 uppercase tracking-widest leading-none">
                                     {currentCategory ? currentCategory.replace(/-/g, ' ') : 'Todos os produtos'}
                                 </h1>
                                 {!loading && (
@@ -155,7 +155,7 @@ function Home() {
                         <select
                             value={sortOrder}
                             onChange={e => setSortOrder(e.target.value)}
-                            className="bg-white/5 border border-emerald-900/50 hover:border-emerald-500 text-gray-400 hover:text-gray-100 px-3 py-2 text-xs font-mono tracking-widest outline-none transition-colors cursor-pointer"
+                            className="w-full sm:w-auto bg-white/5 border border-emerald-900/50 hover:border-emerald-500 text-gray-400 hover:text-gray-100 px-3 py-2 text-xs font-mono tracking-widest outline-none transition-colors cursor-pointer"
                         >
                             <option value="">ORDENAR_POR</option>
                             <option value="price_asc">MENOR_PREÇO</option>
@@ -183,7 +183,7 @@ function Home() {
                     {/* Grid */}
                     {!loading && !error && products.length > 0 && (
                         <>
-                            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-5">
+                            <div className="grid grid-cols-1 sm:grid-cols-2 xl:grid-cols-3 gap-4 md:gap-5">
                                 {products.map(product => (
                                     <div
                                         key={product.id}
