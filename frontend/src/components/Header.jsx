@@ -95,9 +95,6 @@ function Header() {
 
                         <li>
                             <Link to="/cart" className="flex items-center gap-2 group">
-                                <span className="text-gray-500 group-hover:text-emerald-400 font-mono text-xs tracking-widest uppercase transition-colors duration-200">
-                                    Carrinho
-                                </span>
                                 <div className="relative w-8 h-8 border border-white/10 group-hover:border-emerald-500/40 bg-white/[0.02] group-hover:bg-emerald-500/10 flex items-center justify-center transition-all duration-200">
                                     <svg xmlns="http://www.w3.org/2000/svg" className="w-4 h-4 text-gray-500 group-hover:text-emerald-400 transition-colors duration-200" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={1.5}>
                                         <path strokeLinecap="round" strokeLinejoin="round" d="M2.25 3h1.386c.51 0 .955.343 1.087.835l.383 1.437M7.5 14.25a3 3 0 00-3 3h15.75m-12.75-3h11.218c.51 0 .963-.343 1.087-.835l1.624-6.09A1.125 1.125 0 0018.375 6H5.907L5.106 3H2.25" />
