@@ -31,14 +31,14 @@ function Register() {
     };
 
     return (
-        <div className="min-h-screen bg-[#080b0f] flex items-center justify-center px-4">
+        <div className="min-h-screen bg-[#080b0f] flex items-center justify-center px-4 sm:px-6">
             <div className="w-full max-w-md">
 
                 <div className="text-center mb-8">
                     <p className="text-emerald-500 font-mono text-[10px] tracking-[3px] uppercase mb-2">
                         // novo acesso
                     </p>
-                    <h1 className="text-3xl font-bold text-gray-100 uppercase tracking-widest">
+                    <h1 className="text-2xl md:text-3xl font-bold text-gray-100 uppercase tracking-widest">
                         Registro
                     </h1>
                 </div>
@@ -46,9 +46,9 @@ function Register() {
                 <div className="bg-[#0d1117] border border-white/5 relative overflow-hidden">
                     <div className="absolute top-0 left-0 right-0 h-[2px] bg-gradient-to-r from-transparent via-emerald-500 to-transparent" />
 
-                    <div className="p-8 space-y-5">
+                    <div className="p-6 md:p-8 space-y-5">
                         {error && (
-                            <p className="text-red-400 font-mono text-xs tracking-widest text-center border border-red-500/20 bg-red-500/5 py-2">
+                            <p className="text-red-400 font-mono text-xs tracking-widest text-center border border-red-500/20 bg-red-500/5 py-2 px-3">
                                 !! {error}
                             </p>
                         )}
@@ -114,7 +114,7 @@ function Register() {
                         </button>
                     </div>
 
-                    <div className="px-8 py-4 border-t border-white/5 text-center">
+                    <div className="px-6 md:px-8 py-4 border-t border-white/5 text-center">
                         <p className="text-gray-700 font-mono text-[10px] tracking-widest">
                             Já tem conta?{' '}
                             <Link to="/login" className="text-emerald-500/70 hover:text-emerald-400 transition-colors">
