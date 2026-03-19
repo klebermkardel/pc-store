@@ -24,7 +24,8 @@ api.interceptors.response.use(
                 const refreshToken = localStorage.getItem('refresh_token');
                 if (!refreshToken) throw new Error('Sem refresh token');
 
-                const { data } = await axios.post('http://localhost:3000/auth/refresh', {
+                // CORREÇÃO:
+                const { data } = await axios.post   ('https://pc-store-backend-v267.onrender.com/auth/refresh', {
                     refreshToken
                 });
 
