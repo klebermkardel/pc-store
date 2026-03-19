@@ -17,6 +17,8 @@ app.use(cors({
   credentials: true
 }));
 
+app.use(express.json());
+
 Category.hasMany(Product, { foreignKey: 'category_id', as: 'products' });
 Product.belongsTo(Category, { foreignKey: 'category_id', as: 'category' });
 
