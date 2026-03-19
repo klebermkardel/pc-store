@@ -3,7 +3,7 @@ const cors = require('cors');
 const sequelize = require('./config/database');
 const Category = require('./models/Category');
 const Product = require('./models/Product');
-const User = require('./models/User');
+const User = require('./models/User'); // eslint-disable-line no-unused-vars
 const categoryRoutes = require('./routes/categoryRoutes');
 const productRoutes = require('./routes/productRoutes');
 const authRoutes = require('./routes/authRoutes');
@@ -30,8 +30,8 @@ const startServer = async () => {
         await sequelize.sync({ force: false });
 
         const PORT = process.env.PORT || 3000;
-        app.listen(PORT, () => {
-            console.log(`Servidor rodando em http://localhost:${PORT}`);
+        app.listen(PORT, '0.0.0.0', () => {
+            console.log(`Servidor rodando na porta ${PORT}`);
         });
 
         process.on('SIGTERM', async () => {
