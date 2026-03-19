@@ -1,7 +1,9 @@
 import axios from 'axios';
 
+const API_BASE_URL = import.meta.env.VITE_API_URL;
+
 const api = axios.create({
-    baseURL: 'https://pc-store-backend-v267.onrender.com'
+    baseURL: API_BASE_URL
 });
 
 api.interceptors.request.use((config) => {
@@ -24,8 +26,7 @@ api.interceptors.response.use(
                 const refreshToken = localStorage.getItem('refresh_token');
                 if (!refreshToken) throw new Error('Sem refresh token');
 
-                // CORREÇÃO:
-                const { data } = await axios.post   ('https://pc-store-backend-v267.onrender.com/auth/refresh', {
+                const { data } = await axios.post(`${API_BASE_URL}/auth/refresh`, {
                     refreshToken
                 });
 
@@ -40,7 +41,6 @@ api.interceptors.response.use(
                 window.location.href = '/login';
             }
         }
-
         return Promise.reject(error);
     }
 );
