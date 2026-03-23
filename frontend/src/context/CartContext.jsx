@@ -7,7 +7,7 @@ export function CartProvider({ children }) {
     const [cart, setCart] = useState(() => {
         // 1. Proteção contra JSON corrompido
         try {
-            const savedCart = localStorage.getItem('pc_store_cart');
+            const savedCart = localStorage.getItem('ktech_store_cart');
             return savedCart ? JSON.parse(savedCart) : [];
         } catch {
             return [];
@@ -15,7 +15,7 @@ export function CartProvider({ children }) {
     });
 
     useEffect(() => {
-        localStorage.setItem('pc_store_cart', JSON.stringify(cart));
+        localStorage.setItem('ktech_store_cart', JSON.stringify(cart));
     }, [cart]);
 
     const addToCart = (product) => {

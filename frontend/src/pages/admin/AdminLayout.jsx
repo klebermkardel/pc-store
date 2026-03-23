@@ -39,7 +39,7 @@ function AdminLayout({ children }) {
                     <div className="absolute top-0 left-0 right-0 h-[2px] bg-gradient-to-r from-transparent via-emerald-500 to-transparent" />
                     <p className="text-emerald-500 font-mono text-[9px] tracking-[3px] uppercase mb-1">// painel admin</p>
                     <Link to="/" className="text-gray-200 font-bold text-lg uppercase tracking-widest hover:text-emerald-400 transition-colors duration-200">
-                        PC Store
+                        K-Tech Store
                     </Link>
                 </div>
 

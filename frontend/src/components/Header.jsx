@@ -40,7 +40,7 @@ function Header() {
                     {/* Logo */}
                     <Link to="/" onClick={handleLogoClick} className="flex items-center gap-2 group shrink-0">
                         <div className="w-8 h-8 border border-emerald-500/40 group-hover:border-emerald-500 bg-emerald-500/10 flex items-center justify-center transition-all duration-300">
-                            <span className="text-emerald-400 text-sm font-mono font-bold">PC</span>
+                            <span className="text-emerald-400 text-sm font-mono font-bold">K-Tech</span>
                         </div>
                         <div className="hidden sm:block">
                             <span className="text-gray-100 font-bold text-lg uppercase tracking-widest group-hover:text-emerald-400 transition-colors duration-200">

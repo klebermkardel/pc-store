@@ -207,7 +207,7 @@ function StepPagamento({ form, setForm }) {
                         <span className="text-emerald-500/30 font-mono text-xs text-center leading-relaxed">QR CODE<br/>simulado</span>
                     </div>
                     <p className="text-gray-600 font-mono text-[10px] tracking-widest text-center">
-                        Chave: <span className="text-gray-400">pc.store@pix.com.br</span>
+                        Chave: <span className="text-gray-400">ktech_store@pix.com.br</span>
                     </p>
                     <label className="flex items-center gap-2 cursor-pointer mt-1">
                         <input
