@@ -12,7 +12,7 @@ const adminRoutes = require('./routes/adminRoutes');
 const app = express();
 
 app.use(cors({
-  origin: ['https://pc-store-backend-v267.onrender.com', 'https://pc-store-sigma-six.vercel.app'],
+  origin: ['https://pc-store-backend-v267.onrender.com', 'https://ktechstore.vercel.app'],
   methods: ['GET', 'POST', 'PUT', 'DELETE'],
   credentials: true
 }));

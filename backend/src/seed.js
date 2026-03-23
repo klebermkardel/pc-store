@@ -13,11 +13,11 @@ const seed = async () => {
         const adminPassword = await bcrypt.hash('admin123', 12);
         await User.create({
             name: 'Administrador',
-            email: 'admin@pcstore.com',
+            email: 'admin@ktechstore.com',
             password: adminPassword,
             is_admin: true
         });
-        console.log('--- Admin criado: admin@pcstore.com / admin123 ---');
+        console.log('--- Admin criado: admin@ktechstore.com / admin123 ---');
 
         // --- 1. CATEGORIAS ---
         const [c1, c2, c3, c4, c5] = await Category.bulkCreate([
