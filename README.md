@@ -1,4 +1,4 @@
-# 🖥️ PC Store
+# 🖥️ K-Tech Store
 
 Aplicação fullstack de e-commerce de hardware e periféricos para computadores, desenvolvida como projeto de portfólio.
 
@@ -21,7 +21,7 @@ Aplicação fullstack de e-commerce de hardware e periféricos para computadores
 
 ## Sobre o Projeto
 
-PC Store é uma loja virtual completa com vitrine de produtos, carrinho de compras, checkout em etapas, autenticação JWT com refresh token e painel administrativo para gerenciamento de produtos, categorias e usuários.
+K-Tech Store é uma loja virtual completa com vitrine de produtos, carrinho de compras, checkout em etapas, autenticação JWT com refresh token e painel administrativo para gerenciamento de produtos, categorias e usuários.
 
 ---
 
